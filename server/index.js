@@ -11,7 +11,10 @@ const path = require("path");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true // Важно для отправки куки
+}));
 app.use(express.json());
 app.use(fileUpload({}));
 app.use(express.static(path.resolve(__dirname, "static")));

@@ -30,11 +30,14 @@ class UserController {
     });
     const basket = await Basket.create({ userId: user.id });
     const token = generateJwt(user.id, user.email, user.role);
+    console.log(token);
     return res.json(token);
   }
 
   async login(req, res, next) {
+
     const { email, password } = req.body;
+    console.log(email, password)
     const user = await User.findOne({
       where: { email },
     });
@@ -48,7 +51,9 @@ class UserController {
         return next(ApiError.internal('Указан неверный пароль'))
     }
     const token = generateJwt(user.id, user.email, user.role);
+    console.log(token);
     return res.json(token);
+
   }
 
   async check(req, res, next) {

@@ -1,9 +1,15 @@
+import { BrowserRouter } from "react-router-dom";
+import { AppRouter } from "./components/AppRouter";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold justify-center">
-      Hello world!
-    </h1>
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppRouter />
+      </Provider>
+    </BrowserRouter>
   );
 }
 
