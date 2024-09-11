@@ -11,9 +11,12 @@ export const loginUser = createAsyncThunk(
         "http://localhost:5000/api/user/login",
         { email, password }
       );
-      const token = response.data;
+      const token = response.data.token;
+      console.log(token)
       Cookies.set("token", token, { expires: 7 });
+      console.log(response.data);
       return response.data; // Возвращаем данные пользователя
+
     } catch (e) {
       return rejectWithValue(e.response?.data || "Ошибка при логине");
     }
@@ -29,7 +32,7 @@ export const registerUser = createAsyncThunk(
         "http://localhost:5000/api/user/register",
         { email, password, name, role }
       );
-      const { token } = response.data;
+      const { token } = response.data.token;
       Cookies.set("token", token, { expires: 7 });
       return response.data;
     } catch (e) {

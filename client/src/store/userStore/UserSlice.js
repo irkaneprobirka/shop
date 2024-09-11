@@ -1,21 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 import { fetchUserData, loginUser, registerUser } from "./UserApi";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null,
+    user: {
+      email: null,
+      role: Cookies.get("role") || null,
+      name: null,
+    },
     isLoading: false,
     error: null,
-    token: Cookies.get('token') || null,
-    isAuth: Cookies.get('token') ? true : false,
+    token: Cookies.get("token") || null,
+    isAuth: !!Cookies.get("token"),
   },
   reducers: {
     logout: (state) => {
       state.user = null;
       state.token = null;
-      Cookies.remove('token');
+      state.isAuth = false;
+      state.error = null;
+      state.isLoading = false;
+      Cookies.remove("token");
+      Cookies.remove("role");
+      
     },
   },
   extraReducers: (builder) => {
@@ -26,13 +36,16 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload; // Устанавливаем пользователя
-        state.token = action.payload; // Устанавливаем токен
-        Cookies.set('token', action.payload, { expires: 7 }); // Записываем токен в куки
+        state.token = action.payload.token;
+        state.user = action.payload.user;
+        state.isAuth = true;
+        console.log(state.token, state.user.role);
+        Cookies.set("token", state.token, { expires: 7 });
+        Cookies.set("role", state.user.role, { expires: 7 });
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload; // Устанавливаем ошибку
+        state.error = action.payload;
       })
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
@@ -40,9 +53,12 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
-        state.token = action.payload;
-        Cookies.set('token', action.payload, { expires: 7 }); // Записываем токен в куки
+        state.token = action.payload.token;
+        state.user = action.payload.user;
+        state.isAuth = true;
+        console.log(state.token, state.user.role);
+        Cookies.set("token", state.token, { expires: 7 });
+        Cookies.set("role", state.user.role, { expires: 7 });
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -56,8 +72,8 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.isAuth = true;
-        state.userRole = action.payload.role;
-        Cookies.set('role', action.payload.role); // Сохраняем роль в cookies
+        state.userRole = jwtDecode(action.payload.token).role; // Используем jwtDecode
+        Cookies.set("role", state.userRole);
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.isLoading = false;
