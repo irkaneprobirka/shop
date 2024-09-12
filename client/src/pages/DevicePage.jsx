@@ -38,7 +38,7 @@ export const DevicePage = () => {
   }, [product]);
 
   if (!product) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   return (
