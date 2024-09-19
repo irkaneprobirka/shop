@@ -31,13 +31,12 @@ class UserController {
     const basket = await Basket.create({ userId: user.id });
     const token = generateJwt(user.id, user.email, user.role);
     console.log(token);
-    return res.json({token, user});
+    return res.json({ token, user });
   }
 
   async login(req, res, next) {
-
     const { email, password } = req.body;
-    console.log(email, password)
+    console.log(email, password);
     const user = await User.findOne({
       where: { email },
     });
@@ -46,19 +45,32 @@ class UserController {
         ApiError.internal("Пользователь с такой почтой не существует")
       );
     }
-    let comparePassword = bcrypt.compareSync(password, user.password)
+    let comparePassword = bcrypt.compareSync(password, user.password);
     if (!comparePassword) {
-        return next(ApiError.internal('Указан неверный пароль'))
+      return next(ApiError.internal("Указан неверный пароль"));
     }
     const token = generateJwt(user.id, user.email, user.role);
     console.log(token);
-    return res.json({token, user});
-
+    return res.json({ token, user });
   }
 
   async check(req, res, next) {
     const token = generateJwt(req.user.id, req.user.email, req.user.role);
-    return res.json({token});
+    return res.json({ token });
+  }
+
+  async getOneUser(req, res) {
+    const { id } = req.params;
+    console.log(id)
+    if(!id){
+      return res.json("уцалыжфвопрталыфомилвоыаило")
+    }
+    const user = await User.findOne({
+      where: {
+        id,
+      },
+    });
+    return res.json({user})
   }
 }
 

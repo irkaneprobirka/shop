@@ -16,7 +16,7 @@ export const getOneProduct = async (id) => {
     return res.data;
   } catch (e) {
     console.error("Error fetching products:", e);
-    return []; 
+    return [];
   }
 };
 
@@ -35,5 +35,23 @@ export const getOneBrand = async (id) => {
     return res.data;
   } catch (e) {
     console.error(e);
+  }
+};
+
+export const getAllTypes = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/type");
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllBrands = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/brand");
+    return res.data;
+  } catch (error) {
+    console.log(error);
   }
 };

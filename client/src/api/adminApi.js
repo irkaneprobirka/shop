@@ -35,25 +35,23 @@ export const createBrand = async (name, token) => {
   }
 };
 
-export const createDevice = async ({
-  name,
-  typeId,
-  brandId,
-  price,
-  img,
-  info,
-  token,
-}) => {
+export const createDevice = async ({ name, typeId, brandId, price, img, token }) => {
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/device",
-      { name, typeId, brandId, price, img, info },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-      }
-    );
+    // Создаем FormData для передачи файлов
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("typeId", typeId);
+    formData.append("brandId", brandId);
+    formData.append("price", price);
+    formData.append("img", img); // Добавляем файл
+
+    const res = await axios.post("http://localhost:5000/api/device", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Указываем заголовок для работы с файлами
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     return res.data;
   } catch (e) {
     console.log(e);

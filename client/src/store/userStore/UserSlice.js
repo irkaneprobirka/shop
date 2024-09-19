@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
-import { fetchUserData, loginUser, registerUser } from "./UserApi";
+import { fetchUserData, getOneUser, loginUser, registerUser } from "./UserApi";
 import Cookies from "js-cookie";
 
 const userSlice = createSlice({
@@ -78,7 +78,13 @@ const userSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(getOneUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        console.log(action.payload)
+        state.isAuth = true;
+      })
   },
 });
 

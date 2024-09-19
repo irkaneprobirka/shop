@@ -4,21 +4,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { Disclosure } from "@headlessui/react";
 import { authRoutes, publicRoutes } from "../../routes";
 import { logout } from "../../store/userStore/UserSlice";
+import { getOneUser } from "../../store/userStore/UserApi";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export const Layout = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, userRole, user } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    console.log(userRole);
-  }, [userRole]);
+  let id;
+  if (isAuth) {
+    id = jwtDecode(Cookies.get("token")).id;
+  }
 
   const buttonLogout = (e) => {
-    e.preventDefault();
     dispatch(logout());
     navigate("/shop");
   };
+  useEffect(() => {
+    const getUser = async () => {
+      const data = dispatch(getOneUser({id}));
+    };
+    getUser();
+  }, []);
 
   // Определяем функцию для объединения классов
   const getClassName = () => {
@@ -42,24 +50,29 @@ export const Layout = ({ children }) => {
                 <div className="ml-10 flex items-baseline space-x-4">
                   {isAuth && (
                     <>
-                      {authRoutes
-                        .filter(
-                          (route) => !route.role || route.role === user.role
-                        )
-                        .map(({ path, name }) => (
-                          <Link
-                            key={path}
-                            to={path}
-                            className="mr-4 text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
-                          >
-                            {name}
-                          </Link>
-                        ))}
+                      {isAuth && user && (
+                        <>
+                          {authRoutes
+                            .filter(
+                              (route) =>
+                                !route.role || route.role === user?.role
+                            )
+                            .map(({ path, name }) => (
+                              <Link
+                                key={path}
+                                to={path}
+                                className="mr-4 text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                              >
+                                {name}
+                              </Link>
+                            ))}
+                        </>
+                      )}
                     </>
                   )}
 
                   {publicRoutes
-                    .filter((route) => route.name == "Каталог")
+                    .filter((route) => route.name === "Каталог")
                     .map(({ path, name }) => (
                       <Link
                         key={path}
@@ -75,11 +88,13 @@ export const Layout = ({ children }) => {
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
                 {isAuth ? (
-                  // Если пользователь авторизован, показываем его имя и кнопку "Выйти"
+                  // If the user is authenticated, display their name and a "Logout" button
                   <>
-                    <p className="text-sm font-semibold text-gray-900 mr-4">
-                      {user.name}
-                    </p>
+                    {user && (
+                      <p className="text-sm font-semibold text-gray-900 mr-4">
+                        {user.name}
+                      </p>
+                    )}
                     <button
                       type="submit"
                       onClick={buttonLogout}
@@ -89,7 +104,7 @@ export const Layout = ({ children }) => {
                     </button>
                   </>
                 ) : (
-                  // Если пользователь не авторизован, показываем кнопки "Войти" и "Регистрация"
+                  // If the user is not authenticated, display "Login" and "Register" buttons
                   <>
                     <Link
                       to="/login"
