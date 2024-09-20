@@ -22,13 +22,23 @@ export const Layout = ({ children }) => {
     navigate("/shop");
   };
   useEffect(() => {
-    const getUser = async () => {
-      const data = dispatch(getOneUser({id}));
-    };
-    getUser();
-  }, []);
+    const abortController = new AbortController();
 
-  // Определяем функцию для объединения классов
+    const getUser = async () => {
+      if (id) {
+       const data =  dispatch(getOneUser({ id, signal: abortController.signal }));
+      console.log(data);
+      
+      }
+    };
+    
+    getUser();
+
+    return () => {
+      abortController.abort();
+    };
+  }, [dispatch, id]);
+
   const getClassName = () => {
     return "text-gray hover:text-gray-500 mx-5";
   };

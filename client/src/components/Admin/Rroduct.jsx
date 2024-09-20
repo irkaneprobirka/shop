@@ -85,6 +85,7 @@ export const Product = () => {
           name="name"
           placeholder="Введите название"
           errors={errorsDevice.name}
+          label="Название продукта"
         />
 
         <Dropdown
@@ -118,6 +119,7 @@ export const Product = () => {
           name="price"
           placeholder="Введите стоимость"
           errors={errorsDevice.price}
+          label="Стоимость продукта"
         />
 
         <div className="col-span-full">
@@ -127,9 +129,9 @@ export const Product = () => {
           >
             Выберите фото
           </label>
-          <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+          <div className="mt-2 flex justify-center cursor-pointer rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
             <div className="text-center">
-              <div className="mt-4 flex text-sm leading-6 text-gray-600">
+              <div className="mt-4 flex-col text-sm leading-6 text-gray-600">
                 <label
                   htmlFor="file-upload"
                   className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
@@ -146,7 +148,7 @@ export const Product = () => {
                 <p className="pl-1">перетащите фотографию</p>
               </div>
               <p className="text-xs leading-5 text-gray-600">
-                PNG, JPG, GIF up to 10MB
+                PNG, JPG, GIF дo 10MB
               </p>
 
               {/* Отображаем имя выбранного файла */}

@@ -37,8 +37,21 @@ export const DevicePage = () => {
     }
   }, [product]);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return date.toLocaleDateString('ru-RU', options);
+  };
+
   if (!product) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -61,8 +74,9 @@ export const DevicePage = () => {
               {brand ? brand.name : "Loading brand..."}
             </span>
           </div>
+          <p className="text-start font-medium mt-5 text-gray-800">{product.description}</p>
           <div className="mt-5 sm:mt-auto">
-            <p className="text-xs text-gray-500">Last updated 5 mins ago</p>
+            <p className="text-xs mb-5 text-gray-500">Изменен {formatDate(product.updatedAt)}</p>
           </div>
           <button
             type="submit"

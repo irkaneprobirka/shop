@@ -63,7 +63,7 @@ export const getOneUser = createAsyncThunk(
     console.log(id)
     try {
       const response = await axios.get(`http://localhost:5000/api/user/${id}`, {
-        signal : abortController,
+        abortController,
       });
 
       return response.data; // Возвращаем данные, если запрос успешен

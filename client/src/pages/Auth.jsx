@@ -21,7 +21,11 @@ export const Auth = () => {
 
   useEffect(() => {
     console.log(user);
-  }, [user]);
+    return () => {
+      console.log('qwewqewqewqewqeqwewqewqe');
+      
+    }
+  }, []);
 
   return (
     <div>
