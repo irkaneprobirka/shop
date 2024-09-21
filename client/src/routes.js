@@ -13,6 +13,7 @@ import {
   SHOP_ROUTE,
 } from "./utils/consts";
 
+
 export const authRoutes = [
   {
     path: ADMIN_ROUTE,
@@ -21,7 +22,7 @@ export const authRoutes = [
     name: "Панель администратора", // Добавляем имя для отображения в навигации
   },
   {
-    path: BASKET_ROUTE,
+    path: BASKET_ROUTE + '/:id',
     Component: Basket,
     role: 'USER',
     name: "Корзина", // Имя для маршрута корзины

@@ -26,12 +26,14 @@ export const Layout = ({ children }) => {
 
     const getUser = async () => {
       if (id) {
-       const data =  dispatch(getOneUser({ id, signal: abortController.signal }));
-      console.log(data);
-      
+        const data = dispatch(
+          getOneUser({ id, signal: abortController.signal })
+        );
+        console.log(data);
+        console.log(id)
       }
     };
-    
+
     getUser();
 
     return () => {
@@ -63,14 +65,15 @@ export const Layout = ({ children }) => {
                       {isAuth && user && (
                         <>
                           {authRoutes
-                            .filter(
-                              (route) =>
-                                !route.role || route.role === user?.role
-                            )
+                            .filter(({ role }) => !role || role === user?.role)
                             .map(({ path, name }) => (
                               <Link
                                 key={path}
-                                to={path}
+                                to={
+                                  name === "Корзина" && user.role === "USER"
+                                    ? `/basket/${id}`
+                                    : path
+                                }
                                 className="mr-4 text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
                               >
                                 {name}
