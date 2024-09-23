@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getOneBrand, getOneProduct, getOneType } from "../api/shopApi";
+import { addDevice } from "../api/basketApi";
+import { useSelector } from "react-redux";
 
 export const DevicePage = () => {
   const { id } = useParams();
@@ -8,6 +10,7 @@ export const DevicePage = () => {
   const [product, setProduct] = useState(null);
   const [type, setType] = useState(null);
   const [brand, setBrand] = useState(null);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,17 +40,26 @@ export const DevicePage = () => {
     }
   }, [product]);
 
+  const buttonSubmitProduct = async () => {
+    try {
+      const data = await addDevice(user.id, product.id);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     };
-    return date.toLocaleDateString('ru-RU', options);
+    return date.toLocaleDateString("ru-RU", options);
   };
 
   if (!product) {
@@ -74,17 +86,30 @@ export const DevicePage = () => {
               {brand ? brand.name : "Loading brand..."}
             </span>
           </div>
-          <p className="text-start font-medium mt-5 text-gray-800">{product.description}</p>
+          <p className="text-start font-medium mt-5 text-gray-800">
+            {product.description}
+          </p>
           <div className="mt-5 sm:mt-auto">
-            <p className="text-xs mb-5 text-gray-500">Изменен {formatDate(product.updatedAt)}</p>
+            <p className="text-xs mb-5 text-gray-500">
+              Изменен {formatDate(product.updatedAt)}
+            </p>
           </div>
-          <button
-            type="submit"
-            onClick={() => navigate(-1)}
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Назад
-          </button>
+          <div className="flex justify-evenly">
+            <button
+              type="submit"
+              onClick={() => navigate(-1)}
+              className="flex w-1/3 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Назад
+            </button>
+            <button
+              type="submit"
+              onClick={buttonSubmitProduct}
+              className="flex w-1/3 justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Добавить в корзину
+            </button>
+          </div>
         </div>
       </div>
     </div>

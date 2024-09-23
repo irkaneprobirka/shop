@@ -40,7 +40,7 @@ export const Basket = () => {
         <div className="mt-8">
           <div className="flow-root">
             <ul role="list" className="-my-6 divide-y divide-gray-200">
-              {productBasket.length > 0 ? (
+              {productBasket?.length > 0 ? (
                 productBasket.map((product) => (
                   <li key={product.id} className="flex py-6">
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

@@ -3,7 +3,7 @@ const { BasketDevice, Device } = require("../models/models");
 class BasketController {
   async addDevice(req, res) {
     try {
-      const { basketId, deviceId } = req.params;
+      const { basketId, deviceId } = req.body;
       const basketDevice = await BasketDevice.create({ basketId, deviceId });
 
       return res.json({ basketDevice });
