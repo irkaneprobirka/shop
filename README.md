@@ -21,7 +21,7 @@
 
 ### Пользовательский интерфейс:
 
-![Catalog Screenshot](./assets/calalog.png)
+![Catalog Screenshot](./assets/catalog.png)
 
 ### Административная панель:
 
