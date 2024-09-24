@@ -16,9 +16,10 @@ export const Basket = () => {
 
       try {
         const data = await getBasket(user.id); 
-        setProductBasket(data);
+        const products = data.map((el) => el.product);
+        setProductBasket(products)
         if(Array.isArray(data)){
-          setAllPrice(data.reduce((total, product) => total + product.price, 0)); 
+          setAllPrice(productBasket.reduce((total, product) => total + product.price, 0)); 
         }else{
           setAllPrice(0)
         }
@@ -32,6 +33,11 @@ export const Basket = () => {
 
     getBasketDevice();
   }, [user.id]);
+
+  useEffect(() => {
+    console.log(productBasket)
+  }, [productBasket])
+  
 
   if (isLoading) {
     return <div>Loading...</div>;

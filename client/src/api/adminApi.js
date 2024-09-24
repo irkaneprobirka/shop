@@ -7,7 +7,7 @@ export const createType = async (name, token) => {
       { name },
       {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -25,7 +25,7 @@ export const createBrand = async (name, token) => {
       { name },
       {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -35,7 +35,15 @@ export const createBrand = async (name, token) => {
   }
 };
 
-export const createDevice = async ({ name, typeId, brandId, price, img, token, description }) => {
+export const createDevice = async ({
+  name,
+  typeId,
+  brandId,
+  price,
+  img,
+  token,
+  description,
+}) => {
   try {
     const formData = new FormData();
     formData.append("name", name);
@@ -55,5 +63,17 @@ export const createDevice = async ({ name, typeId, brandId, price, img, token, d
     return res.data;
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const deleteProduct = async (deviceId) => {
+  try {
+    const res = await axios.delete(
+      `http://localhost:5000/api/device/delete/${deviceId}`
+    );
+    
+    return res.data;
+  } catch (error) {
+    console.log(error);
   }
 };

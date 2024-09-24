@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getOneBrand, getOneProduct, getOneType } from "../api/shopApi";
 import { addDevice } from "../api/basketApi";
 import { useSelector } from "react-redux";
+import { deleteProduct } from "../api/adminApi";
 
 export const DevicePage = () => {
   const { id } = useParams();
@@ -43,6 +44,15 @@ export const DevicePage = () => {
   const buttonSubmitProduct = async () => {
     try {
       const data = await addDevice(user.id, product.id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const buttonDeleteProduct = async () => {
+    try {
+      const data = await deleteProduct(product.id);
+      navigate("/shop")
     } catch (error) {
       console.log(error);
     }
@@ -109,6 +119,16 @@ export const DevicePage = () => {
                 className="flex w-1/3 justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Добавить в корзину
+              </button>
+            )}
+
+            {user && user.role == "ADMIN" && (
+              <button
+                type="submit"
+                onClick={buttonDeleteProduct}
+                className="flex w-1/3 justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Удалить продукт
               </button>
             )}
           </div>

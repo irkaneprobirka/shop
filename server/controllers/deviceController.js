@@ -1,6 +1,6 @@
 const uuid = require("uuid");
 const path = require("path");
-const { Device, DeviceInfo } = require("../models/models");
+const { Device, DeviceInfo, Basket, BasketDevice } = require("../models/models");
 const ApiError = require("../error/ApiError");
 
 class DeviceController {
@@ -82,6 +82,25 @@ class DeviceController {
       ],
     });
     return res.json(device);
+  }
+
+  async deleteDevice(req, res) {
+    try {
+      const {deviceId} = req.params;
+      const deleteDevice = await Device.destroy({
+        where : {
+          id : deviceId
+        }
+      })
+      const deleteBasketDevice = await BasketDevice.destroy({
+        where : {
+         deviceId,
+        }
+      })
+      return res.json(deleteDevice)
+    } catch (error) {
+      console.error("Error retrieving basket items:", error);
+    }
   }
 }
 
