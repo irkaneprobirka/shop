@@ -29,8 +29,6 @@ export const Layout = ({ children }) => {
         const data = dispatch(
           getOneUser({ id, signal: abortController.signal })
         );
-        console.log(data);
-        console.log(id)
       }
     };
 

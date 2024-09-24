@@ -2,10 +2,10 @@ import axios from "axios";
 
 export const getBasket = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/basket/${id}`); 
+      const res = await axios.get(`http://localhost:5000/api/basket/${id}`);
       return res.data;
     } catch (error) {
-      console.log(error);
+      return [];
     }
   };
   

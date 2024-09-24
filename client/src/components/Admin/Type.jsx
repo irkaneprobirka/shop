@@ -18,7 +18,6 @@ export const Type = () => {
       const type = await createType(data.name, token);
       setCreatedType(type);
       resetType();
-      console.log("Тип создан:", type);
     } catch (error) {
       console.error("Ошибка создания типа:", error);
     }

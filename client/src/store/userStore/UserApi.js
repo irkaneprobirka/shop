@@ -12,9 +12,7 @@ export const loginUser = createAsyncThunk(
         { email, password }
       );
       const token = response.data.token;
-      console.log(token);
       Cookies.set("token", token, { expires: 7 });
-      console.log(response.data);
       return response.data; // Возвращаем данные пользователя
     } catch (e) {
       return rejectWithValue(e.response?.data || "Ошибка при логине");
@@ -60,7 +58,6 @@ export const fetchUserData = createAsyncThunk(
 export const getOneUser = createAsyncThunk(
   "user/getOneUser",
   async ({id, abortController}, { rejectWithValue }) => {
-    console.log(id)
     try {
       const response = await axios.get(`http://localhost:5000/api/user/${id}`, {
         abortController,

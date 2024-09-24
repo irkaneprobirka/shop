@@ -14,8 +14,8 @@ export const Product = () => {
   const [brands, setBrands] = useState([]);
   const [selectedTypeId, setSelectedTypeId] = useState(null);
   const [selectedBrandId, setSelectedBrandId] = useState(null);
-  const [selectedFileName, setSelectedFileName] = useState(""); // Для отображения имени файла
-  const [selectedFile, setSelectedFile] = useState(null); // Для хранения выбранного файла
+  const [selectedFileName, setSelectedFileName] = useState(""); 
+  const [selectedFile, setSelectedFile] = useState(null); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,21 +36,21 @@ export const Product = () => {
   } = useForm();
 
   const onSubmitDevice = async (data) => {
-    // Создаем FormData и передаем его в createDevice
     const deviceData = {
       name: data.name,
       typeId: data.typeId,
       brandId: data.brandId,
       price: data.price,
-      img: selectedFile, // Передаем файл
+      img: selectedFile, 
       token,
+      description: data.description,
     };
 
     try {
-      await createDevice(deviceData); // Отправляем данные с изображением
+      await createDevice(deviceData); 
       resetDevice();
-      setSelectedFileName(""); // Сбрасываем выбранный файл
-      setSelectedFile(null); // Сбрасываем файл
+      setSelectedFileName("");
+      setSelectedFile(null); 
     } catch (error) {
       console.error("Ошибка создания устройства:", error);
     }
@@ -69,11 +69,11 @@ export const Product = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFileName(file.name); // Устанавливаем имя выбранного файла
-      setSelectedFile(file); // Устанавливаем файл для отправки
+      setSelectedFileName(file.name); 
+      setSelectedFile(file);
     } else {
-      setSelectedFileName(""); // Сбрасываем имя, если файл не выбран
-      setSelectedFile(null); // Сбрасываем файл
+      setSelectedFileName(""); 
+      setSelectedFile(null); 
     }
   };
 
@@ -86,6 +86,14 @@ export const Product = () => {
           placeholder="Введите название"
           errors={errorsDevice.name}
           label="Название продукта"
+        />
+
+        <Input
+          register={registerDevice}
+          name="description"
+          placeholder="Введите описание"
+          errors={errorsDevice.description}
+          label="Описание продукта"
         />
 
         <Dropdown
@@ -150,8 +158,7 @@ export const Product = () => {
               <p className="text-xs leading-5 text-gray-600">
                 PNG, JPG, GIF дo 10MB
               </p>
-
-              {/* Отображаем имя выбранного файла */}
+              
               {selectedFileName && (
                 <p className="text-sm leading-6 text-gray-600 mt-2">
                   Выбранный файл: {selectedFileName}

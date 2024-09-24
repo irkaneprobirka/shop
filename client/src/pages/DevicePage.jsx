@@ -43,7 +43,6 @@ export const DevicePage = () => {
   const buttonSubmitProduct = async () => {
     try {
       const data = await addDevice(user.id, product.id);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -102,13 +101,16 @@ export const DevicePage = () => {
             >
               Назад
             </button>
-            <button
-              type="submit"
-              onClick={buttonSubmitProduct}
-              className="flex w-1/3 justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Добавить в корзину
-            </button>
+
+            {user && user.role == "USER" && (
+              <button
+                type="submit"
+                onClick={buttonSubmitProduct}
+                className="flex w-1/3 justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Добавить в корзину
+              </button>
+            )}
           </div>
         </div>
       </div>

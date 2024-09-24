@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getBasket } from "../api/basketApi";
+import { useNavigate } from "react-router-dom";
 
 export const Basket = () => {
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   
   const [productBasket, setProductBasket] = useState([]);
   const [allPrice, setAllPrice] = useState(0);
@@ -11,15 +13,16 @@ export const Basket = () => {
 
   useEffect(() => {
     const getBasketDevice = async () => {
-      if (!user || !user.id) {
-        console.error("User or basketId is missing");
-        return;
-      }
 
       try {
         const data = await getBasket(user.id); 
         setProductBasket(data);
-        setAllPrice(data.reduce((total, product) => total + product.price, 0)); 
+        if(Array.isArray(data)){
+          setAllPrice(data.reduce((total, product) => total + product.price, 0)); 
+        }else{
+          setAllPrice(0)
+        }
+
       } catch (error) {
         console.log(error);
       } finally {
@@ -28,7 +31,7 @@ export const Basket = () => {
     };
 
     getBasketDevice();
-  }, [user]);
+  }, [user.id]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,7 +45,7 @@ export const Basket = () => {
             <ul role="list" className="-my-6 divide-y divide-gray-200">
               {productBasket?.length > 0 ? (
                 productBasket.map((product) => (
-                  <li key={product.id} className="flex py-6">
+                  <li key={Math.random()} className="flex py-6">
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                       <img
                         alt={product.name}
@@ -89,6 +92,7 @@ export const Basket = () => {
             или{" "}
             <button
               type="button"
+              onClick={() => navigate('/shop')}
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
               Продолжить покупки <span aria-hidden="true"> &rarr;</span>

@@ -18,7 +18,6 @@ export const Brand = () => {
       const brand = await createBrand(data.name, token);
       setCreatedBrand(brand);
       resetBrand();
-      console.log("Brand создан:", brand);
     } catch (error) {
       console.error("Ошибка создания brand:", error);
     }

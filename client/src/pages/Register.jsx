@@ -19,9 +19,6 @@ export const Register = () => {
     dispatch(registerUser(form));
     navigate("/shop");
   };
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <div>

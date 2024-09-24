@@ -35,15 +35,15 @@ export const createBrand = async (name, token) => {
   }
 };
 
-export const createDevice = async ({ name, typeId, brandId, price, img, token }) => {
+export const createDevice = async ({ name, typeId, brandId, price, img, token, description }) => {
   try {
-    // Создаем FormData для передачи файлов
     const formData = new FormData();
     formData.append("name", name);
     formData.append("typeId", typeId);
     formData.append("brandId", brandId);
     formData.append("price", price);
-    formData.append("img", img); // Добавляем файл
+    formData.append("img", img);
+    formData.append("description", description);
 
     const res = await axios.post("http://localhost:5000/api/device", formData, {
       headers: {

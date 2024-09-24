@@ -26,7 +26,7 @@ class BasketController {
       });
   
       if (!basketDevice.length) {
-        return res.status(404).json({ message: "No items found in the basket" });
+        return res.status(200).json({ message: "Ваша корзина пуста" });
       }
   
       basketDevice.map((el) => productIdArray.push(el.deviceId));
@@ -43,7 +43,6 @@ class BasketController {
       return res.json(products);
     } catch (error) {
       console.error("Error retrieving basket items:", error);
-      return res.status(500).json({ message: "Internal Server Error" });
     }
   }
   

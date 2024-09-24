@@ -39,7 +39,6 @@ const userSlice = createSlice({
         state.token = action.payload.token;
         state.user = action.payload.user;
         state.isAuth = true;
-        console.log(state.token, state.user.role);
         Cookies.set("token", state.token, { expires: 7 });
         Cookies.set("role", state.user.role, { expires: 7 });
       })
@@ -56,7 +55,6 @@ const userSlice = createSlice({
         state.token = action.payload.token;
         state.user = action.payload.user;
         state.isAuth = true;
-        console.log(state.token, state.user.role);
         Cookies.set("token", state.token, { expires: 7 });
         Cookies.set("role", state.user.role, { expires: 7 });
       })
@@ -82,7 +80,6 @@ const userSlice = createSlice({
       .addCase(getOneUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        console.log(action.payload)
         state.isAuth = true;
       })
   },
