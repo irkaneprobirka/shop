@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createType } from "../../api/adminApi";
+import Modal from '../../UIKit/Modal'; 
+
 
 export const Type = () => {
   const token = useSelector((state) => state.user.token);
   const [createdType, setCreatedType] = useState(null);
+  const [isTypeModalOpen, setIsTypeModalOpen] = useState(false);
   const {
     register: registerType,
     handleSubmit: handleSubmitType,
@@ -18,6 +21,7 @@ export const Type = () => {
       const type = await createType(data.name, token);
       setCreatedType(type);
       resetType();
+      setIsTypeModalOpen(true)
     } catch (error) {
       console.error("Ошибка создания типа:", error);
     }
@@ -47,6 +51,14 @@ export const Type = () => {
           Создать
         </button>
       </form>
+
+      <Modal
+        open={isTypeModalOpen}
+        onClose={() => setIsTypeModalOpen(false)}
+        label="Тип добавлен"
+        children={'Тип успешно добавлен'}
+      >
+      </Modal>
     </div>
   );
 };

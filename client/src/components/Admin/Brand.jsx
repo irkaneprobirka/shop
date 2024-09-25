@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createBrand} from "../../api/adminApi";
+import Modal from '../../UIKit/Modal'; 
 
 export const Brand = () => {
   const token = useSelector((state) => state.user.token);
   const [createdBrand, setCreatedBrand] = useState(null);
+  const [isBrandModalOpen, setIsBrandModalOpen] = useState(false);
   const {
     register: registerBrand,
     handleSubmit: handleSubmitBrand,
@@ -18,6 +20,7 @@ export const Brand = () => {
       const brand = await createBrand(data.name, token);
       setCreatedBrand(brand);
       resetBrand();
+      setIsBrandModalOpen(true)
     } catch (error) {
       console.error("Ошибка создания brand:", error);
     }
@@ -47,6 +50,14 @@ export const Brand = () => {
           Создать
         </button>
       </form>
+
+      <Modal
+        open={isBrandModalOpen}
+        onClose={() => setIsBrandModalOpen(false)}
+        label="Бренд добавлен"
+        children={'Бренд успешно добавлен'}
+      >
+      </Modal>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import FormLayout from "../../UIKit/FormLayout";
 import Input from "../../UIKit/Input";
 import Dropdown from "../../UIKit/Dropdown";
 import SubmitButton from "../../UIKit/SubmitButton";
+import Modal from '../../UIKit/Modal'; 
 
 export const Product = () => {
   const token = useSelector((state) => state.user.token);
@@ -15,7 +16,8 @@ export const Product = () => {
   const [selectedTypeId, setSelectedTypeId] = useState(null);
   const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState(""); 
-  const [selectedFile, setSelectedFile] = useState(null); 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +53,7 @@ export const Product = () => {
       resetDevice();
       setSelectedFileName("");
       setSelectedFile(null); 
+      setIsProductModalOpen(true)
     } catch (error) {
       console.error("Ошибка создания устройства:", error);
     }
@@ -170,6 +173,14 @@ export const Product = () => {
 
         <SubmitButton label="Создать" />
       </form>
+      
+      <Modal
+        open={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
+        label="Продукт добавлен"
+        children={'Продукт успешно добавлен в каталог'}
+      >
+      </Modal>
     </FormLayout>
   );
 };

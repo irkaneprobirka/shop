@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { deleteDevice, getBasket } from "../api/basketApi";
 import { useNavigate } from "react-router-dom";
+import Modal from '../UIKit/Modal'; 
 
 export const Basket = () => {
   const { user } = useSelector((state) => state.user);
@@ -11,7 +12,7 @@ export const Basket = () => {
   const [allPrice, setAllPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [basketDeviceId, setBasketDeviceId] = useState([]);
-
+  const [isDeleteSuccessModalOpen, setIsDeleteSuccessModalOpen] = useState(false);
   useEffect(() => {
     const getBasketDevice = async () => {
       try {
@@ -50,6 +51,7 @@ export const Basket = () => {
         0
       );
       setAllPrice(newPrice);
+      setIsDeleteSuccessModalOpen(true);
     } catch (error) {
       console.log(error);
     }
@@ -83,9 +85,7 @@ export const Basket = () => {
                             <h3 className="mb-3">{product.name}</h3>
                             <button
                               type="button"
-                              onClick={() =>
-                                deleteProduct(basketDeviceId[index])
-                              }
+                              onClick={() => deleteProduct(basketDeviceId[index])}
                               className="flex w-36 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                               Удалить продукт
@@ -134,6 +134,14 @@ export const Basket = () => {
           </p>
         </div>
       </div>
+
+      <Modal
+        open={isDeleteSuccessModalOpen}
+        onClose={() => setIsDeleteSuccessModalOpen(false)}
+        label="Продукт удален из корзины"
+        children={'Продукт успешно удален'}
+      >
+      </Modal>
     </div>
   );
 };

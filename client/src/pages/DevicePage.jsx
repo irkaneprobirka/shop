@@ -4,6 +4,7 @@ import { getOneBrand, getOneProduct, getOneType } from "../api/shopApi";
 import { addDevice } from "../api/basketApi";
 import { useSelector } from "react-redux";
 import { deleteProduct } from "../api/adminApi";
+import Modal from '../UIKit/Modal'; 
 
 export const DevicePage = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export const DevicePage = () => {
   const [type, setType] = useState(null);
   const [brand, setBrand] = useState(null);
   const { user } = useSelector((state) => state.user);
+  const [isAddSuccessModalOpen, setIsAddSuccessModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -44,6 +46,7 @@ export const DevicePage = () => {
   const buttonSubmitProduct = async () => {
     try {
       const data = await addDevice(user.id, product.id);
+      setIsAddSuccessModalOpen(true)
     } catch (error) {
       console.log(error);
     }
@@ -134,6 +137,14 @@ export const DevicePage = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        open={isAddSuccessModalOpen}
+        onClose={() => setIsAddSuccessModalOpen(false)}
+        label={user && user.role === 'USER' ? ("Продукт добавлен в корзину") : 'Продукт успешно удален'}
+        children={user && user.role === 'USER' ? ("Продукт успешно добавлен в корзину") : 'Продукт успешно удален из каталога'}
+      >
+      </Modal>
     </div>
   );
 };
